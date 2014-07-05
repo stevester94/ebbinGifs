@@ -1,0 +1,14 @@
+<%= form_for(@entry) do |f| %>
+  <div class="field">
+    <%= f.label :score %><br>
+    <%= f.text_field :score %>
+  </div><br>
+
+  <div class="field">
+  	<%= f.label :url %><br>
+  	<%= f.text_field :url %><br>
+  	
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
