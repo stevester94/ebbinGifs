@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  resources :gif_entry
+  resources :gif_entries do
+    collection do
+      get 'new'
+    end
+  end
+  match "/gif_entries/new" => "gif_entries#create", :via => :post, :as => :create
   root 'gif_entries#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
