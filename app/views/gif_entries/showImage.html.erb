@@ -1,0 +1,27 @@
+<script>
+function runJS(){
+      jQuery.ajax({
+          url: "/gif_entries/fetchRandomEntry",
+          data: null,
+          success: function(result) {
+    			  document.getElementById("image").innerHTML = '<img src="' + result + '" height="450"">' + '<br>';
+     			 },
+      		error: function() {
+          alert('Error occured');
+     			 }
+
+      });
+}
+</script>
+<html>
+</head>
+<body style="background-color:black;">
+
+
+<br>
+<div align="center" id="image"><b></b></div>
+<div align="center">
+  <button onclick="runJS(1)">+</button>
+</div>
+</body>
+</html>

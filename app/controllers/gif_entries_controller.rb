@@ -14,5 +14,15 @@ class GifEntriesController < ApplicationController
     redirect_to root_path
   end
 
+  def fetchRandomEntry #horribly innefficient, will have to come up with something better
+  	offset = rand(GifEntry.count)
+  	allRecords = GifEntry.all
+  	rand_record = allRecords[offset]
+ 		render plain: rand_record.url #for now only fetch url
+  end
+
+  def showImage
+  end
+
 
 end

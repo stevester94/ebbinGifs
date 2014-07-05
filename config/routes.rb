@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   resources :gif_entries do
     collection do
       get 'new'
+      get 'fetchRandomEntry'
+      get 'showImage'
     end
   end
   match "/gif_entries/new" => "gif_entries#create", :via => :post, :as => :create
