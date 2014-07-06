@@ -1,10 +1,16 @@
 <script>
-function runJS(){
+oldUrl = 'null'
+function runJS(input){
+      var payload = {'url':oldUrl, 'score':input}
       jQuery.ajax({
-          url: "/gif_entries/fetchRandomEntry",
-          data: null,
+          url: "/gif_entries/fetchRandomEntry/",
+          data: payload,
           success: function(result) {
-    			  document.getElementById("image").innerHTML = '<img src="' + result + '" height="450"">' + '<br>';
+            var parsedResult = JSON.parse(result.toString());
+            oldUrl = parsedResult.url;
+            var score = parsedResult.score;
+    			  document.getElementById("image").innerHTML = '<img src="' + oldUrl + '" height="450"">' + '<br>';
+            document.getElementById("score").innerHTML = "score: " + score;
      			 },
       		error: function() {
           alert('Error occured');
@@ -14,14 +20,14 @@ function runJS(){
 }
 </script>
 <html>
-</head>
-<body style="background-color:black;">
-
 
 <br>
 <div align="center" id="image"><b></b></div>
 <div align="center">
   <button onclick="runJS(1)">+</button>
+  <button onclick="runJS(-1)">-</button><b>
+  <div align="center" id="score"><b></b></div>
+
 </div>
 </body>
 </html>

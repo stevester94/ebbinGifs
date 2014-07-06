@@ -2,10 +2,11 @@ Rails.application.routes.draw do
   resources :gif_entries do
     collection do
       get 'new'
-      get 'fetchRandomEntry'
       get 'showImage'
+      get 'fetchRandomEntry/' => 'gif_entries#fetchRandomEntry'
     end
   end
+  # get '/gif_entries/fetchRandomEntry/:data' => 'gif_entries#fetchRandomEntry'
   match "/gif_entries/new" => "gif_entries#create", :via => :post, :as => :create
   root 'gif_entries#index'
   # The priority is based upon order of creation: first created -> highest priority.
