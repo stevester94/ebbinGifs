@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
-
+	
+gem 'bcrypt', :require => 'bcrypt' 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.2'
 # Use postgresql as the database for Active Record

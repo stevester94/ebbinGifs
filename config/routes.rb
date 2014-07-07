@@ -9,6 +9,10 @@ Rails.application.routes.draw do
   # get '/gif_entries/fetchRandomEntry/:data' => 'gif_entries#fetchRandomEntry'
   match "/gif_entries/new" => "gif_entries#create", :via => :post, :as => :create
   root 'gif_entries#index'
+
+  get "/users/new"
+  post "/users/create"
+  get "/users/:name" => "users#show"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
