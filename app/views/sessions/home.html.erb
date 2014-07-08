@@ -1,6 +1,22 @@
+<script>
+function deleteFavorite(url){
+      jQuery.ajax({
+          url: "/sessions/deleteFavorite/",
+          data: {'url':url},
+          success: function(result) {
+            alert('Favorite removed')
+           },
+          error: function() {
+          alert('Error occured');
+           }
+
+      });
+}
+</script>
+
 <%= session[:name] %>'s favorites <br>
-<% @favorites.each do |favorites| %>
+<% @favorites.each do |favorite| %>
   <tr>
-    <td><%= GifEntry.find(favorites).url %></td>
+    <td><img src= <%= favorite.url%> height="450"> <button onclick="deleteFavorite('<%= favorite.url%>')">remove</button> </td><br>
   </tr>
 <% end %>

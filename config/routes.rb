@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   get "/sessions/login" => 'sessions#login'
   post "/sessions/loginAttempt" => 'sessions#loginAttempt'
   get "/sessions/home"
+  get "/sessions/addFavorite/" => 'sessions#addFavorite'
+  get "/sessions/deleteFavorite/" => 'sessions#deleteFavorite'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
