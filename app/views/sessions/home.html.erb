@@ -1,0 +1,6 @@
+<%= session[:name] %>'s favorites <br>
+<% @favorites.each do |favorites| %>
+  <tr>
+    <td><%= GifEntry.find(favorites).url %></td>
+  </tr>
+<% end %>

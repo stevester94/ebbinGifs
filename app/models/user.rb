@@ -20,4 +20,19 @@ class User < ActiveRecord::Base
 	def clear_password
 	  self.password = nil
 	end
+
+	def self.authenticate(username="", login_password="")
+	  user = User.find_by_name(username)
+	  if user && user.match_password(login_password)
+	    return user
+	  else
+	    return false
+	  end
+	end   
+
+	def match_password(login_password="")
+	  self.encryptedPassword == BCrypt::Engine.hash_secret(login_password, salt)
+	end
+
+
 end
