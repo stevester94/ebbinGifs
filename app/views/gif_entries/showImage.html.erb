@@ -20,7 +20,7 @@ function submitVote(input){
 }
 function submitFavorite(){
       jQuery.ajax({
-          url: "/sessions/addFavorite/",
+          url: "/users/addFavorite/",
           data: {'url':oldUrl},
           success: function(result) {
             alert('Favorited')
@@ -34,7 +34,8 @@ function submitFavorite(){
 
 </script>
 <html>
-
+<body onload="submitVote(0)">
+<%= render '/layouts/ribbon' %>
 <br>
 <div align="center" id="image"><b></b></div>
 <div align="center">

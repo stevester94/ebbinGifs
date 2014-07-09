@@ -8,17 +8,21 @@ Rails.application.routes.draw do
   end
   # get '/gif_entries/fetchRandomEntry/:data' => 'gif_entries#fetchRandomEntry'
   match "/gif_entries/new" => "gif_entries#create", :via => :post, :as => :create
-  root 'gif_entries#index'
+  root 'gif_entries#showImage'
 
+  get "/users/addFavorite/" => 'users#addFavorite'
+  get "/users/deleteFavorite/" => 'users#deleteFavorite'
   get "/users/new"
   post "/users/create"
   get "/users/:name" => "users#show"
+  
+  get "/users/deleteFavorite/" => 'users#deleteFavorite'
 
+  get "/sessions/logout"
   get "/sessions/login" => 'sessions#login'
   post "/sessions/loginAttempt" => 'sessions#loginAttempt'
   get "/sessions/home"
-  get "/sessions/addFavorite/" => 'sessions#addFavorite'
-  get "/sessions/deleteFavorite/" => 'sessions#deleteFavorite'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

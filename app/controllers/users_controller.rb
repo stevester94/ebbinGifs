@@ -4,7 +4,11 @@ class UsersController < ApplicationController
   end
 
   def show
-  	@user = User.find_by name: (params[:name])
+    user = session[:name]
+    @loggedIn = params[:name] == session[:name] #if profile being viewed is own account
+  	@user = User.find_by_name(params[:name])
+  	@favorites = Favorite.where(:user => params[:name])
+
   end
 
   def create
@@ -18,4 +22,19 @@ class UsersController < ApplicationController
     end
     render "new"
   end
+
+	def addFavorite
+		render nothing: true
+		h = Hash.new()
+		h["user"] = session[:name]
+		h["url"] = params[:url]
+		@entry = Favorite.new(h)
+		@entry.save
+	end
+
+	def deleteFavorite
+		render nothing: true
+		Favorite.where(:user => session[:name]).where(:url => params[:url]).destroy_all
+	end
+
 end

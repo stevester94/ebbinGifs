@@ -2,6 +2,11 @@ class SessionsController < ApplicationController
 	def login
 	end
 
+  def logout
+    session[:name] = nil
+    redirect_to :root
+  end
+
 	def home
 		@favorites = Favorite.where(:user => session[:name])
 	end
@@ -13,7 +18,7 @@ class SessionsController < ApplicationController
 
       flash[:notice] = "Wow Welcome again, you logged in as #{authorized_user.name}"
       session[:name] = authorized_user.name
-      redirect_to(:action => 'home')
+      redirect_to(:action => root)
     else
     	puts "failed login"
 
@@ -22,23 +27,5 @@ class SessionsController < ApplicationController
       render "login"	
     end
   end
-
-	def logout
-	end
-
-	def addFavorite
-		render nothing: true
-		h = Hash.new()
-		h["user"] = session[:name]
-		h["url"] = params[:url]
-		@entry = Favorite.new(h)
-		@entry.save
-	end
-
-	def deleteFavorite
-		render nothing: true
-		Favorite.where(:user => session[:name]).where(:url => params[:url]).destroy_all
-	end
-
-
+	
 end

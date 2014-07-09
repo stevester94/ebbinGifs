@@ -1,0 +1,17 @@
+<home>
+	<%= link_to 'Home', root_path %>
+</home>
+
+<loginStatus>
+	<% if session[:name] != nil %>
+		<%= session[:name] %>
+	<% else %>
+		<%= link_to 'Log In', '/sessions/login' %>
+	<% end %>
+</loginStatus>
+
+<toFavorites>
+	<% if session[:name] != nil %>
+		<%= link_to 'Favorites', '/users/' + session[:name] %>
+	<%end%>
+</toFavorites>
