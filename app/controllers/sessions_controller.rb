@@ -18,7 +18,7 @@ class SessionsController < ApplicationController
 
       flash[:notice] = "Wow Welcome again, you logged in as #{authorized_user.name}"
       session[:name] = authorized_user.name
-      redirect_to(:action => root)
+      redirect_to root_path
     else
     	puts "failed login"
 

@@ -1,5 +1,6 @@
 <script>
-oldUrl = 'null'
+oldUrl = 'null';
+
 function submitVote(input){
       var payload = {'url':oldUrl, 'score':input}
       jQuery.ajax({
@@ -9,7 +10,7 @@ function submitVote(input){
             var parsedResult = JSON.parse(result.toString());
             oldUrl = parsedResult.url;
             var score = parsedResult.score;
-    			  document.getElementById("image").innerHTML = '<img src="' + oldUrl + '" height="450"">' + '<br>';
+    			  document.getElementById("image").innerHTML = '<img src="' + oldUrl + '" height="200""/>' + '<br>';
             document.getElementById("score").innerHTML = "score: " + score;
      			 },
       		error: function() {
@@ -31,19 +32,19 @@ function submitFavorite(){
 
       });
 }
+$(document).ready(submitVote(0));
+$(document).on('page:load', submitVote(0));
 
 </script>
 <html>
-<body onload="submitVote(0)">
+
 <%= render '/layouts/ribbon' %>
-<br>
-<div align="center" id="image"><b></b></div>
+<div align="center" id="image"><b></div>
 <div align="center">
   <button onclick="submitVote(1)">+</button>
   <button onclick="submitVote(-1)">-</button><b>
   <button onClick="submitFavorite()">Fav</button><b>
-  <div align="center" id="score"><b></b></div>
-
+  <div align="center" id="score"><b></div>
 </div>
 </body>
 </html>

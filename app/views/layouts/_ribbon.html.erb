@@ -1,17 +1,20 @@
-<home>
-	<%= link_to 'Home', root_path %>
-</home>
+<header class="navbar navbar-fixed-top navbar-inverse">
+  <div class="navbar-inner">
+    <div class="container">
+      <logo><a href="/">Ebbin Gifs</a></logo>
+      <nav>
+        <ul class="nav pull-right">
+					<% if session[:name] != nil %>
+						<%= link_to 'Favorites', '/users/' + session[:name] %>
+					<%end%>
 
-<loginStatus>
-	<% if session[:name] != nil %>
-		<%= session[:name] %>
-	<% else %>
-		<%= link_to 'Log In', '/sessions/login' %>
-	<% end %>
-</loginStatus>
-
-<toFavorites>
-	<% if session[:name] != nil %>
-		<%= link_to 'Favorites', '/users/' + session[:name] %>
-	<%end%>
-</toFavorites>
+					<% if session[:name] != nil %>
+						<%= session[:name] %>
+					<% else %>
+						<%= link_to 'Log In', '/sessions/login' %>
+					<% end %>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>

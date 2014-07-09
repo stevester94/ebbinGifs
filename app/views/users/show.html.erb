@@ -14,12 +14,16 @@ function deleteFavorite(url){
       });
 }
 </script>
+
+
 <%= render '/layouts/ribbon' %>
 <%= @user.name %>'s favorites <br>
 <% @favorites.each do |favorite| %>
   <tr>
     <td><img src= <%= favorite.url%> height="450"> 
-    		<%= render inline: '<button onclick="deleteFavorite()">remove</button>' %> 
+    	<% if session[:name] != nil %>
+    		<%= render inline: '<button onclick="deleteFavorite(' + favorite.url + ')">remove</button>' %> 
+    	<% end %>
     </td><br>
   </tr>
 <% end %>
