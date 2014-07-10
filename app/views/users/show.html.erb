@@ -1,11 +1,11 @@
 <script>
-function deleteFavorite(url){
+function deleteFavorite(input){
       jQuery.ajax({
           url: "/users/deleteFavorite/",
-          data: {'url':url},
+          data: {'id':input.toString()},
           success: function(result) {
-            alert('Favorite removed')
-            location.reload(true)
+            alert('Favorite deleted')
+            location.reload();
            },
           error: function() {
           alert('Error occured');
@@ -15,15 +15,19 @@ function deleteFavorite(url){
 }
 </script>
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <%= render '/layouts/ribbon' %>
 <%= @user.name %>'s favorites <br>
-<% @favorites.each do |favorite| %>
-  <tr>
-    <td><img src= <%= favorite.url%> height="450"> 
-    	<% if session[:name] != nil %>
-    		<%= render inline: '<button onclick="deleteFavorite(' + favorite.url + ')">remove</button>' %> 
-    	<% end %>
-    </td><br>
-  </tr>
-<% end %>
+
+<div class="row">
+	<% @favorites.each do |favorite| %>
+		<div class="col-sm-6 col-md-3">
+	    <img src= <%= favorite.url%> height="200"> 
+	    	<% if session[:name] != nil %>
+	    		<%= render inline:  '<button onclick="deleteFavorite(' + favorite.id.to_s + ')">remove</button>'.html_safe%> 
+	    	<% end %>
+	    <br>
+	  </div>
+	<% end %>
+</div>

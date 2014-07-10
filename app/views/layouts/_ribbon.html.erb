@@ -1,7 +1,7 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="navbar-inner">
     <div class="container">
-      <logo><a href="/">Ebbin Gifs</a></logo>
+      <%= link_to "Ebin Gifs", root_path, id: "logo" %>
       <nav>
         <ul class="nav pull-right">
 					<% if session[:name] != nil %>
@@ -10,6 +10,7 @@
 
 					<% if session[:name] != nil %>
 						<%= session[:name] %>
+						<%= link_to 'logout', '/sessions/logout/' %>
 					<% else %>
 						<%= link_to 'Log In', '/sessions/login' %>
 					<% end %>

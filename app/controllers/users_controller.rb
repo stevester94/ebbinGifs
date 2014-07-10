@@ -32,9 +32,9 @@ class UsersController < ApplicationController
 		@entry.save
 	end
 
-	def deleteFavorite
+	def deleteFavorite #deleted based on id, was a workaround for confusing string handling
 		render nothing: true
-		Favorite.where(:user => session[:name]).where(:url => params[:url]).destroy_all
+		Favorite.where(:id => params[:id]).destroy_all
 	end
 
 end
