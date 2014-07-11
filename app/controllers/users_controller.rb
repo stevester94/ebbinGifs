@@ -14,13 +14,12 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params.require(:user).permit([:name, :password, :password_confirmation]))
     if @user.save
-      flash[:notice] = "You signed up successfully"
-      flash[:color]= "valid"
+      session[:name] = @user.name
+      redirect_to root_path
     else
       flash[:notice] = "Form is invalid"
       flash[:color]= "invalid"
     end
-    render "new"
   end
 
 	def addFavorite
@@ -28,7 +27,7 @@ class UsersController < ApplicationController
 		h = Hash.new()
 		h["user"] = session[:name]
 		h["url"] = params[:url]
-		@entry = Favorite.new(h)
+		@entry = Favorite.new(h)profile
 		@entry.save
 	end
 

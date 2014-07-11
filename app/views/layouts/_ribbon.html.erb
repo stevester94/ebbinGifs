@@ -2,20 +2,50 @@
   <div class="navbar-inner">
     <div class="container">
       <%= link_to "Ebin Gifs", root_path, id: "logo" %>
-      <nav>
-        <ul class="nav pull-right">
-					<% if session[:name] != nil %>
-						<%= link_to 'Favorites', '/users/' + session[:name] %>
-					<%end%>
 
-					<% if session[:name] != nil %>
-						<%= session[:name] %>
-						<%= link_to 'logout', '/sessions/logout/' %>
-					<% else %>
-						<%= link_to 'Log In', '/sessions/login' %>
-					<% end %>
+      <nav>
+      	<div class="ribbonText">
+          <div class="ribbonMessage" id="message"></div>
+	        <ul class="nav pull-right">
+
+						<% if session[:name] != nil %>
+							<div class="ribbonName"> <%= session[:name] %> </div>
+							<%= link_to 'Favorites', '/users/' + session[:name] %>
+							<%= link_to 'logout', '/sessions/logout/' %>
+						<% else %>
+							<%= link_to 'Log In', '/sessions/login' %>
+							<%= link_to 'New User', '/users/new' %>
+						<% end %>
+					</div>
         </ul>
       </nav>
     </div>
   </div>
 </header>
+
+
+<script>
+//Turbolinks was calling ready before the html was fully loaded, placing after the ribbon fixed this 
+
+
+//if nothing passed in, will check sessionStorage for a message and display and pop if present
+function displayMessage (messageIn) {
+  if(messageIn == null && sessionStorage.message != null) {
+      message = sessionStorage.message;
+      sessionStorage.removeItem("message");
+  }
+  else
+    message = messageIn; 
+  if(document.getElementById("message").innerHTML != "") {//if message present blink and display next
+    document.getElementById("message").innerHTML = " ";
+    setTimeout(function(){
+      
+      document.getElementById("message").innerHTML = message;
+       }, 150);
+  }
+  else
+    document.getElementById("message").innerHTML = message;  
+}
+// $(document).on('page:load', displayMessage('load'));
+$(document).ready(displayMessage(null));
+</script>

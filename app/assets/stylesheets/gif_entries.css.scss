@@ -6,32 +6,13 @@
 
 /* universal */
 
-html {
-  overflow-y: scroll;
-}
-
 body {
   padding-top: 60px;
   background-color: #000
 }
 
-section {
-  overflow: auto;
-}
 
-textarea {
-  resize: vertical;
-}
-
-.center {
-  text-align: center;
-}
-
-.center h1 {
-  margin-bottom: 10px;
-}
-
-/*logo*/
+/*ribbon*/
 
 #logo {
   float: left;
@@ -50,5 +31,33 @@ textarea {
   text-decoration: none;
 }
 
+.ribbonName {
+	display:inline;
+	color:yellow;
+}
+
+.ribbonText {
+	padding-top: 9px;
+}
+
+.ribbonMessage {
+	position:absolute;
+	display:inline;
+	color:red;
+	text-align:center;
+}
+
 /*image stuff */
 img {height:450px}
+
+/* favorites */
+.favCol {
+  -moz-column-count: 3; /* Firefox */
+  -webkit-column-count: 3; /* Safari and Chrome */
+  column-count: 3;
+}
+
+.favEntry {
+	img {height:250px};
+	padding-bottom:15px;
+}

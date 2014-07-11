@@ -1,11 +1,12 @@
+
 <script>
 function deleteFavorite(input){
       jQuery.ajax({
           url: "/users/deleteFavorite/",
           data: {'id':input.toString()},
           success: function(result) {
-            alert('Favorite deleted')
             location.reload();
+            sessionStorage.setItem("message", "favorite removed");
            },
           error: function() {
           alert('Error occured');
@@ -15,19 +16,19 @@ function deleteFavorite(input){
 }
 </script>
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
 <%= render '/layouts/ribbon' %>
 <%= @user.name %>'s favorites <br>
 
-<div class="row">
+<div class="favCol" align = "center"> <!couldn't get css to center things :( >
 	<% @favorites.each do |favorite| %>
-		<div class="col-sm-6 col-md-3">
-	    <img src= <%= favorite.url%> height="200"> 
-	    	<% if session[:name] != nil %>
-	    		<%= render inline:  '<button onclick="deleteFavorite(' + favorite.id.to_s + ')">remove</button>'.html_safe%> 
+		<div class="favEntry">
+	    <img src= <%= favorite.url%> > 
+	    	<% if session[:name] == @user.name %>
+	    		<br>
+	    		<%= render inline:  '<button onclick="deleteFavorite(' + favorite.id.to_s + ')">remove</button>'.html_safe%>
 	    	<% end %>
 	    <br>
 	  </div>
 	<% end %>
+
 </div>
