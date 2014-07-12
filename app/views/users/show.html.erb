@@ -20,9 +20,17 @@ function deleteFavorite(input){
 <%= @user.name %>'s favorites <br>
 
 <div class="favCol" align = "center"> <!couldn't get css to center things :( >
-	<% @favorites.each do |favorite| %>
+	<% @favorites.each_with_index do |favorite, i| %>
+    <% @shaved = favorite.url[0..-5] %>
 		<section class="favEntry">
-	    <img src= <%= favorite.url%> > 
+
+      <a href="" 
+        onMouseOver="document.img<%=i.to_s%>.src='<%= @shaved + '.gif' %>';" 
+        onMouseOut="document.img<%=i.to_s%>.src='<%= @shaved + 'm.gif' %>';">
+      <img src="<%= @shaved + 'm.gif' %>" name="img<%=i.to_s%>">
+      </a> 
+
+
 	    	<% if session[:name] == @user.name %>
 	    		</br>
 	    		<%= render inline:  '<button onclick="deleteFavorite(' + favorite.id.to_s + ')">remove</button>'.html_safe%>

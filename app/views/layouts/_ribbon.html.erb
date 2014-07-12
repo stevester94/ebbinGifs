@@ -30,6 +30,8 @@
 
 //if nothing passed in, will check sessionStorage for a message and display and pop if present
 function displayMessage (messageIn) {
+  console.log("displayMessage called");
+  var sessionParam = null;
   <% if flash[:message] != nil %>
     sessionParam = " <%= flash[:message] %> ";
     <% flash[:message] = nil %>
@@ -50,6 +52,9 @@ function displayMessage (messageIn) {
   else
     message = null;
 
+  if(message == null)
+    document.getElementById("message").innerHTML = "";
+  
   if(document.getElementById("message").innerHTML != "") {//if message present blink and display next
     document.getElementById("message").innerHTML = " ";
     setTimeout(function(){
