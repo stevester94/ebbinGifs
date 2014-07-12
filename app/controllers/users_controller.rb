@@ -8,7 +8,6 @@ class UsersController < ApplicationController
     @loggedIn = params[:name] == session[:name] #if profile being viewed is own account
   	@user = User.find_by_name(params[:name])
   	@favorites = Favorite.where(:user => params[:name])
-
   end
 
   def create
@@ -17,8 +16,12 @@ class UsersController < ApplicationController
       session[:name] = @user.name
       redirect_to root_path
     else
-      flash[:notice] = "Form is invalid"
-      flash[:color]= "invalid"
+      allMessages = ""
+      for message in @user.errors.full_messages
+        allMessages = allMessages + " " + message
+      end
+      flash[:message] = allMessages
+      redirect_to "/users/new"
     end
   end
 
@@ -27,7 +30,7 @@ class UsersController < ApplicationController
 		h = Hash.new()
 		h["user"] = session[:name]
 		h["url"] = params[:url]
-		@entry = Favorite.new(h)profile
+		@entry = Favorite.new(h)
 		@entry.save
 	end
 

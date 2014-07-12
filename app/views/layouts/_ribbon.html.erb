@@ -30,12 +30,26 @@
 
 //if nothing passed in, will check sessionStorage for a message and display and pop if present
 function displayMessage (messageIn) {
-  if(messageIn == null && sessionStorage.message != null) {
+  <% if flash[:message] != nil %>
+    sessionParam = " <%= flash[:message] %> ";
+    <% flash[:message] = nil %>
+  <% end %>  
+
+  if(messageIn != null)
+    message = messageIn;
+
+  else if(sessionStorage.message != null) {
       message = sessionStorage.message;
       sessionStorage.removeItem("message");
   }
+
+  else if(sessionParam != null) {
+    message = sessionParam;
+  }
+
   else
-    message = messageIn; 
+    message = null;
+
   if(document.getElementById("message").innerHTML != "") {//if message present blink and display next
     document.getElementById("message").innerHTML = " ";
     setTimeout(function(){

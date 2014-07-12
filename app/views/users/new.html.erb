@@ -1,9 +1,11 @@
 <% @page_title = "UserAuth | Signup" %>
+<%= render '/layouts/ribbon' %>
+
 <div class="Sign_Form">
   <h1>Sign Up</h1>
   <%= form_for(:user, :url => {:controller => 'users', :action => 'create'}) do |f| %>
     <p> Username:</br> <%= f.text_field :name%> </p>
-    <p> Password:</br> <%= f.password_field :password%></p>
+    <p> Password (5 characters min):</br> <%= f.password_field :password %></p>
     <p> Password Confirmation:</br> <%= f.password_field :password_confirmation%> </p>
     <%= f.submit :Signup %>
   <% end %>

@@ -21,14 +21,14 @@ function deleteFavorite(input){
 
 <div class="favCol" align = "center"> <!couldn't get css to center things :( >
 	<% @favorites.each do |favorite| %>
-		<div class="favEntry">
+		<section class="favEntry">
 	    <img src= <%= favorite.url%> > 
 	    	<% if session[:name] == @user.name %>
-	    		<br>
+	    		</br>
 	    		<%= render inline:  '<button onclick="deleteFavorite(' + favorite.id.to_s + ')">remove</button>'.html_safe%>
 	    	<% end %>
 	    <br>
-	  </div>
+	  </section>
 	<% end %>
 
 </div>

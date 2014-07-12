@@ -13,18 +13,12 @@ class SessionsController < ApplicationController
 
 	def loginAttempt
     authorized_user = User.authenticate(params[:username], params[:login_password])
-    if authorized_user
-    	puts "succesful login"
-
-      flash[:notice] = "Wow Welcome again, you logged in as #{authorized_user.name}"
+    if authorized_user.is_a? String #atrocious, model returns error as string, or user on success
+      flash[:message] = authorized_user
+      render "login"
+    else
       session[:name] = authorized_user.name
       redirect_to root_path
-    else
-    	puts "failed login"
-
-      flash[:notice] = "Invalid Username or Password"
-      flash[:color]= "invalid"
-      render "login"	
     end
   end
 	
