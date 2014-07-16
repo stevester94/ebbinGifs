@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
 	before_save :encrypt_password
 	after_save :clear_password
 
+	has_many :favorites
+
 
 	def encrypt_password
 	  if password.present?

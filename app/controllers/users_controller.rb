@@ -4,16 +4,15 @@ class UsersController < ApplicationController
   end
 
   def show
-    user = session[:name]
-    @loggedIn = params[:name] == session[:name] #if profile being viewed is own account
-  	@user = User.find_by_name(params[:name])
-  	@favorites = Favorite.where(:user => params[:name])
+    user_id = params[:param_id]
+  	@user = User.find(user_id)
+  	@favorites = @user.favorites
   end
 
   def create
     @user = User.new(params.require(:user).permit([:name, :password, :password_confirmation]))
     if @user.save
-      session[:name] = @user.name
+      session[:user_id] = @user.id
       redirect_to root_path
     else
       allMessages = ""
@@ -27,14 +26,11 @@ class UsersController < ApplicationController
 
 	def addFavorite
 		render nothing: true
-		h = Hash.new()
-		h["user"] = session[:name]
-		h["url"] = params[:url]
-		@entry = Favorite.new(h)
-		@entry.save
+		user = User.find(session[:user_id])
+		user.favorites.create(url: params[:url])
 	end
 
-	def deleteFavorite #deleted based on id, was a workaround for confusing string handling
+	def deleteFavorite 
 		render nothing: true
 		Favorite.where(:id => params[:id]).destroy_all
 	end

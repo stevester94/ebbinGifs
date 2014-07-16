@@ -8,9 +8,9 @@
           <div class="ribbonMessage" id="message"></div>
 	        <ul class="nav pull-right">
 
-						<% if session[:name] != nil %>
-							<div class="ribbonName"> <%= session[:name] %> </div>
-							<%= link_to 'Favorites', '/users/' + session[:name] %>
+						<% if session[:user_id] != nil %>
+							<div class="ribbonName"> <%= User.find(session[:user_id]).name %> </div>
+							<%= link_to 'Favorites', '/users/' + session[:user_id].to_s %>
 							<%= link_to 'logout', '/sessions/logout/' %>
 						<% else %>
 							<%= link_to 'Log In', '/sessions/login' %>

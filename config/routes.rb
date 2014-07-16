@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     collection do
       get 'new'
       get 'showImage'
-      get 'fetchRandomEntry/' => 'gif_entries#fetchRandomEntry'
+      get 'fetchEntry/' => 'gif_entries#fetchEntry'
     end
   end
   # get '/gif_entries/fetchRandomEntry/:data' => 'gif_entries#fetchRandomEntry'
@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   get "/users/deleteFavorite/" => 'users#deleteFavorite'
   get "/users/new"
   post "/users/create"
-  get "/users/:name" => "users#show"
+  get "/users/:param_id" => "users#show"
   
   get "/users/deleteFavorite/" => 'users#deleteFavorite'
 

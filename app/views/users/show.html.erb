@@ -31,7 +31,7 @@ function deleteFavorite(input){
       </a> 
 
 
-	    	<% if session[:name] == @user.name %>
+	    	<% if session[:user_id] == @user.id %>
 	    		</br>
 	    		<%= render inline:  '<button onclick="deleteFavorite(' + favorite.id.to_s + ')">remove</button>'.html_safe%>
 	    	<% end %>

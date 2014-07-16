@@ -14,7 +14,7 @@ function deleteFavorite(url){
 }
 </script>
 
-<%= session[:name] %>'s favorites <br>
+<%= @user.name %>'s favorites <br>
 <% @favorites.each do |favorite| %>
   <tr>
     <td><img src= <%= favorite.url%> height="450"> <button onclick="deleteFavorite('<%= favorite.url%>')">remove</button> </td><br>

@@ -4,7 +4,7 @@ oldUrl = 'null';
 function submitVote(input){
       var payload = {'url':oldUrl, 'score':input}
       jQuery.ajax({
-          url: "/gif_entries/fetchRandomEntry/",
+          url: "/gif_entries/fetchEntry/",
           data: payload,
           success: function(result) {
             var parsedResult = JSON.parse(result.toString());
@@ -44,7 +44,7 @@ $(document).on('page:load', submitVote(0));
 <div align="center">
   <button onclick="submitVote(1)">+</button>
   <button onclick="submitVote(-1)">-</button><b>
-  <% if session[:name] != nil %>
+  <% if session[:user_id] != nil %>
     <%= render inline:  '<button onClick="submitFavorite()">Fav</button><b>'.html_safe%> 
   <% end %>
   <div align="center" id="score"><b></div>
