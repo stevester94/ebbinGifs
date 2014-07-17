@@ -1,4 +1,7 @@
 class GifEntry < ActiveRecord::Base
+  has_many :connections, foreign_key: "origin_id"
+  has_many :back_connections, foreign_key: "destination_id"
+
 	def self.randomEntry
   	offset = rand(self.count)
   	allRecords = self.all

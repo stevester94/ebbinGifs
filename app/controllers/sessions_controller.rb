@@ -3,10 +3,7 @@ class SessionsController < ApplicationController
 	end
 
   def logout
-    puts "logout called"
-    puts session[:user_id]
-    session[:user_id] = "shoop"
-    puts session[:user_id]
+    session[:user_id] = nil
     redirect_to :root
   end
 
