@@ -25,7 +25,7 @@ function submitVote(input){
 function submitFavorite(){
       jQuery.ajax({
           url: "/users/addFavorite/",
-          data: {'url':current_URL},
+          data: {'url':current_url},
           success: function(result) {
             displayMessage("Favorited");
            },
