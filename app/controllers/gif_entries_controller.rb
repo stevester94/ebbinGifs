@@ -25,9 +25,12 @@ class GifEntriesController < ApplicationController
     randomEntry = GifEntry.randomEntry
     render plain: randomEntry.to_json
 
-  	if params[:url] != 'null'
-      GifEntry.updateScore(params[:url], params[:score])
-      # updateConnection(params[:url], randomEntry)
+    currentEntry = GifEntry.find_by(url: params[:current_url])
+    pastEntry = GifEntry.find_by(url: params[:past_url])
+
+  	if params[:current_url] != 'null'
+      currentEntry.updateScore(params[:vote])
+      updateConnection(pastEntry, currentEntry, params[:vote])
 	  end
   end
 
@@ -36,11 +39,15 @@ class GifEntriesController < ApplicationController
 
   private
 
-  def updateConnection(originURL, destinationRecord)
-    originRecord = GifEntry.find_by(url: originURL)
-    connection = originRecord.connections.find_by(destination_id: destinationRecord.id)
-    connection.strength = connection.strength + 1
-    connection.save
+  def updateConnection(originRecord, destinationRecord, vote)
+
+    if originRecord.id != destinationRecord.id
+      connection = originRecord.connections.find_by(destination_id: destinationRecord.id)
+      connection.strength = connection.strength + vote.to_i
+      connection.save
+    else
+      puts "SAME GIF ENTRY"
+    end
   end
 
 end

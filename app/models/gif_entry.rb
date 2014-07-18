@@ -9,10 +9,15 @@ class GifEntry < ActiveRecord::Base
   	return rand_record
   end
 
-  def self.updateScore(url, score)
-  	selectedRec = self.find_by url: url
-  	selectedRec.score = selectedRec.score + score.to_i
-  	selectedRec.save
+  def updateScore(vote)
+    self.score = self.score + vote.to_i
+    self.save
   end
+
+  # def self.updateScore(url, score)
+  # 	selectedRec = self.find_by url: url
+  # 	selectedRec.score = selectedRec.score + score.to_i
+  # 	selectedRec.save
+  # end
 
 end

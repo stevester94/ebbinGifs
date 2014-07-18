@@ -1,16 +1,18 @@
 <script>
-oldUrl = 'null';
+past_url = 'null';
+current_url = 'null';
 
 function submitVote(input){
-      var payload = {'url':oldUrl, 'score':input}
+      var payload = {'past_url':past_url, 'current_url':current_url, 'vote':input}
       jQuery.ajax({
           url: "/gif_entries/fetchEntry/",
           data: payload,
           success: function(result) {
             var parsedResult = JSON.parse(result.toString());
-            oldUrl = parsedResult.url;
+            past_url = current_url;
+            current_url = parsedResult.url;
             var score = parsedResult.score;
-    			  document.getElementById("image").innerHTML = '<img src="' + oldUrl + '" height="200""/>' + '<br>';
+    			  document.getElementById("image").innerHTML = '<img src="' + current_url + '" height="200""/>' + '<br>';
             document.getElementById("score").innerHTML = "score: " + score;
             displayMessage(null);//clears any existing messages
      			 },
@@ -23,7 +25,7 @@ function submitVote(input){
 function submitFavorite(){
       jQuery.ajax({
           url: "/users/addFavorite/",
-          data: {'url':oldUrl},
+          data: {'url':current_URL},
           success: function(result) {
             displayMessage("Favorited");
            },
