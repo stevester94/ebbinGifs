@@ -22,15 +22,23 @@ class GifEntriesController < ApplicationController
   end
 
   def fetchEntry 
-    randomEntry = GifEntry.randomEntry
-    render plain: randomEntry.to_json
+    #GifEntry.suggestedEntry will contain all of the logic for selecting the next gif
 
     currentEntry = GifEntry.find_by(url: params[:current_url])
     pastEntry = GifEntry.find_by(url: params[:past_url])
 
-  	if params[:current_url] != 'null'
+    if currentEntry != nil
+      entry = currentEntry.suggestedEntry
+    else
+      entry = GifEntry.randomEntry
+    end
+    render plain: entry.to_json
+
+  	if currentEntry != nil
       currentEntry.updateScore(params[:vote])
-      pastEntry.updateConnection(currentEntry, params[:vote])
+      if pastEntry != nil
+        pastEntry.updateConnection(currentEntry, params[:vote])
+      end
 	  end
   end
 

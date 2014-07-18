@@ -22,6 +22,14 @@ class GifEntry < ActiveRecord::Base
     end
   end
 
+  def suggestedEntry 
+    #currently selects the strongest connection, proof of concept. works
+
+    connections = self.connections.order('strength DESC')
+    connection  = connections.first
+    return connection.destination
+  end
+
   # def self.updateScore(url, score)
   # 	selectedRec = self.find_by url: url
   # 	selectedRec.score = selectedRec.score + score.to_i
