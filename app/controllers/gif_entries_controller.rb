@@ -30,7 +30,7 @@ class GifEntriesController < ApplicationController
 
   	if params[:current_url] != 'null'
       currentEntry.updateScore(params[:vote])
-      updateConnection(pastEntry, currentEntry, params[:vote])
+      pastEntry.updateConnection(currentEntry, params[:vote])
 	  end
   end
 
@@ -39,15 +39,6 @@ class GifEntriesController < ApplicationController
 
   private
 
-  def updateConnection(originRecord, destinationRecord, vote)
 
-    if originRecord.id != destinationRecord.id
-      connection = originRecord.connections.find_by(destination_id: destinationRecord.id)
-      connection.strength = connection.strength + vote.to_i
-      connection.save
-    else
-      puts "SAME GIF ENTRY"
-    end
-  end
 
 end

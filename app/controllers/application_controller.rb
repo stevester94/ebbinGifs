@@ -22,7 +22,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
+  def resetScores
+    allEntries = GifEntry.all
+    allEntries.each do |entry|
+      entry.score = 0
+      entry.save
+    end
+  end
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception

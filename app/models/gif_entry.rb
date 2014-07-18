@@ -14,6 +14,14 @@ class GifEntry < ActiveRecord::Base
     self.save
   end
 
+  def updateConnection(destinationRecord, vote)
+    if self.id != destinationRecord.id
+      connection = self.connections.find_by(destination_id: destinationRecord.id)
+      connection.strength = connection.strength + vote.to_i
+      connection.save
+    end
+  end
+
   # def self.updateScore(url, score)
   # 	selectedRec = self.find_by url: url
   # 	selectedRec.score = selectedRec.score + score.to_i
