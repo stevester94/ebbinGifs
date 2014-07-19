@@ -9,6 +9,18 @@ class GifEntriesController < ApplicationController
 		@entry = GifEntry.new
 	end
 
+  def autoCreate
+    render :nothing => true
+    @entry = GifEntry.new(score: 0, url: params[:param_url])
+    @entry.save
+    GifEntry.all.each do |record| #create a connection to all existing GifEntries
+      if !(@entry.id == record.id)
+        @entry.connections.create(strength: 0, destination_id: record.id)
+        record.connections.create(strength: 0, destination_id: @entry.id)
+      end
+    end
+  end
+
 	def create
 		@entry = GifEntry.new(params.require(:gif_entry).permit([:score, :url]))
     @entry.save
@@ -28,7 +40,7 @@ class GifEntriesController < ApplicationController
     pastEntry = GifEntry.find_by(url: params[:past_url])
 
     if currentEntry != nil
-      entry = currentEntry.suggestedEntry
+      entry = currentEntry.suggestedEntry(params[:vote])
     else
       entry = GifEntry.randomEntry
     end

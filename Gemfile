@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'descriptive_statistics'
+
 gem 'sprockets'
 
 gem 'bootstrap-sass', '2.3.2.0'

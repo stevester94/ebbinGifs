@@ -22,18 +22,81 @@ class GifEntry < ActiveRecord::Base
     end
   end
 
-  def suggestedEntry 
-    #currently selects the strongest connection, proof of concept. works
+  def suggestedEntry(vote)
 
-    connections = self.connections.order('strength DESC')
-    connection  = connections.first
-    return connection.destination
+    if vote.to_i > 0
+      connections = self.connections.where("strength >= 0")
+    else
+      connections = self.connections.where("strength <= 0")
+    end #select all connections corresponding to the turning point of the vot
+    #will select all zero records as well, will help all connections get attention
+
+    strengths = []
+    connections.all.each do |connection|
+      strengths.append(connection.strength)
+    end
+
+    mean = strengths.mean
+    sd = strengths.standard_deviation
+
+    puts "+++++++++++++++++++++++"
+    puts "mean: " + mean.to_s
+    puts "sd  : " + sd.to_s
+    puts strengths
+
+    randomStrength = RandomGaussian.new(mean, sd).rand
+    closestStrength = find_closest(randomStrength, strengths)
+    puts "randomStrength: " + randomStrength.to_s
+    puts "closestStrength: " + closestStrength.to_s
+    puts "+++++++++++++++++++++++"
+
+    suggestedEntry = self.connections.find_by(strength: closestStrength).destination
+    return suggestedEntry
   end
 
-  # def self.updateScore(url, score)
-  # 	selectedRec = self.find_by url: url
-  # 	selectedRec.score = selectedRec.score + score.to_i
-  # 	selectedRec.save
-  # end
+  private
+  def find_closest(value, array)
+    minDistance = (array.first - value).abs
+    closestValue = array.first
+    array.each do |cur_value|
+      if (cur_value - value).abs < minDistance
+        minDistance = (cur_value - value).abs
+        closestValue = cur_value
+      end
+    end
+    return closestValue
+  end
 
+end
+
+class RandomGaussian
+  def initialize(mean, stddev, rand_helper = lambda { Kernel.rand })
+    @rand_helper = rand_helper
+    @mean = mean
+    @stddev = stddev
+    @valid = false
+    @next = 0
+  end
+
+  def rand
+    if @valid then
+      @valid = false
+      return @next
+    else
+      @valid = true
+      x, y = self.class.gaussian(@mean, @stddev, @rand_helper)
+      @next = y
+      return x
+    end
+  end
+
+  private
+  def self.gaussian(mean, stddev, rand)
+    theta = 2 * Math::PI * rand.call
+    rho = Math.sqrt(-2 * Math.log(1 - rand.call))
+    scale = stddev * rho
+    x = mean + scale * Math.cos(theta)
+    y = mean + scale * Math.sin(theta)
+    return x, y
+  end
 end

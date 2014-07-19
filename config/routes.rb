@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       get 'new'
       get 'showImage'
       get 'fetchEntry/' => 'gif_entries#fetchEntry'
+      get 'autoCreate'
     end
   end
   # get '/gif_entries/fetchRandomEntry/:data' => 'gif_entries#fetchRandomEntry'
