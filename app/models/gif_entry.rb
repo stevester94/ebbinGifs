@@ -28,8 +28,9 @@ class GifEntry < ActiveRecord::Base
       connections = self.connections.where("strength >= 0")
     else
       connections = self.connections.where("strength <= 0")
-    end #select all connections corresponding to the turning point of the vot
+    end #select all connections corresponding to the turning point of the vote
     #will select all zero records as well, will help all connections get attention
+    #if there are multiple records with the same strength, will select randomly
 
     strengths = []
     connections.all.each do |connection|
@@ -50,12 +51,16 @@ class GifEntry < ActiveRecord::Base
     puts "closestStrength: " + closestStrength.to_s
     puts "+++++++++++++++++++++++"
 
-    suggestedEntry = self.connections.find_by(strength: closestStrength).destination
-    return suggestedEntry
+    suggestedEntries = self.connections.where(strength: closestStrength)
+    rand = rand(suggestedEntries.count)
+
+    return suggestedEntries[rand].destination
   end
 
   private
   def find_closest(value, array)
+    #if multiple values are found to have the same distance, will be added to an array and 
+    # => randomly selected from
     minDistance = (array.first - value).abs
     closestValue = array.first
     array.each do |cur_value|
