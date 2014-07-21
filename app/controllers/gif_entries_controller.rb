@@ -46,7 +46,7 @@ class GifEntriesController < ApplicationController
     end
 
     if session[:user_id] != nil
-      if User.find(session[:user_id]).favorites.exists?(entry.id)
+      if User.find(session[:user_id]).favorites.exists?(:url => entry.url)
         favorited = true
       else
         favorited = false
