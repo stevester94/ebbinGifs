@@ -44,7 +44,20 @@ class GifEntriesController < ApplicationController
     else
       entry = GifEntry.randomEntry
     end
-    render plain: entry.to_json
+
+    if session[:user_id] != nil
+      if User.find(session[:user_id]).favorites.exists?(entry.id)
+        favorited = true
+      else
+        favorited = false
+      end
+    else
+      favorited = false
+    end
+
+
+    response = {:url => entry.url, :score => entry.score, :favorited => favorited}
+    render plain: response.to_json
 
   	if currentEntry != nil
       currentEntry.updateScore(params[:vote])
@@ -55,6 +68,9 @@ class GifEntriesController < ApplicationController
   end
 
   def showImage
+  end
+
+  def autoVote
   end
 
   private

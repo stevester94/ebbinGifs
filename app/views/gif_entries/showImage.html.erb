@@ -14,6 +14,11 @@ function submitVote(input){
             var score = parsedResult.score;
     			  document.getElementById("image").innerHTML = '<img src="' + current_url + '" height="200""/>' + '<br>';
             document.getElementById("score").innerHTML = "score: " + score;
+            if(parsedResult.favorited == true)
+              document.getElementById("favoriteButton").innerHTML = "Already Favorited";
+            else
+              document.getElementById("favoriteButton").innerHTML = "Favorite";
+
             displayMessage(null);//clears any existing messages
      			 },
       		error: function() {
@@ -28,6 +33,7 @@ function submitFavorite(){
           data: {'url':current_url},
           success: function(result) {
             displayMessage("Favorited");
+            document.getElementById("favoriteButton").innerHTML = "Already Favorited";
            },
           error: function() {
             displayMessage("An error ocurred");
@@ -47,7 +53,7 @@ $(document).on('page:load', submitVote(0));
   <button onclick="submitVote(1)">+</button>
   <button onclick="submitVote(-1)">-</button><b>
   <% if session[:user_id] != nil %>
-    <%= render inline:  '<button onClick="submitFavorite()">Fav</button><b>'.html_safe%> 
+    <%= render inline:  '<button id="favoriteButton" onClick="submitFavorite()">Fav</button><b>'.html_safe%> 
   <% end %>
   <div align="center" id="score"><b></div>
 </div>

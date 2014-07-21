@@ -1,0 +1,64 @@
+<script>
+past_url = 'null';
+current_url = 'null';
+numRuns = 0;
+successes = 0;
+failures = 0;
+ratio = 0;
+blanks = 0;
+
+function submitVote(input){
+      var payload = {'past_url':past_url, 'current_url':current_url, 'vote':input}
+      jQuery.ajax({
+          url: "/gif_entries/fetchEntry/",
+          data: payload,
+          success: function(result) {
+            var parsedResult = JSON.parse(result.toString());
+            past_url = current_url;
+            current_url = parsedResult.url;
+            var score = parseInt(parsedResult.score);
+
+            document.getElementById("numRuns").innerHTML = "numRuns: " + parseInt(numRuns);
+            document.getElementById("successes").innerHTML = "successes: " + parseInt(successes);
+            document.getElementById("failures").innerHTML = "failures: " + parseInt(failures);
+            document.getElementById("blanks").innerHTML = "blanks: " + parseInt(blanks);
+            document.getElementById("ratio").innerHTML = "ratio: " + parseInt(ratio);
+
+            numRuns++;
+            if(score > 0) {
+              successes++;
+              submitVote(1);
+            } else if(score < 0) {
+              failures++;
+              submitVote(-1);
+            } else {
+              if(Math.random() > 0.5)
+                submitVote(1);
+              else
+                submitVote(-1);
+              blanks++;
+            }
+
+            if(failures > 0)
+              ratio = successes/failures;
+     			 },
+      		error: function() {
+            alert("An error ocurred");
+     			 }
+
+      });
+}
+
+$(document).ready(submitVote(0));
+$(document).on('page:load', submitVote(0));
+
+</script>
+<html>
+
+<div id="numRuns"><b></div>
+<div id="successes"><b></div>
+<div id="failures"><b></div>
+<div id="blanks"><b></div>
+<div id="ratio"><b></div>
+
+</html>

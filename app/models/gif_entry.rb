@@ -22,15 +22,15 @@ class GifEntry < ActiveRecord::Base
     end
   end
 
+  #if vote is positive, will select all connections with a positive strength
+  #if vote is negative will select from all connections.
   def suggestedEntry(vote)
 
     if vote.to_i > 0
       connections = self.connections.where("strength >= 0")
     else
-      connections = self.connections.where("strength <= 0")
-    end #select all connections corresponding to the turning point of the vote
-    #will select all zero records as well, will help all connections get attention
-    #if there are multiple records with the same strength, will select randomly
+      connections = self.connections
+    end 
 
     strengths = []
     connections.all.each do |connection|
@@ -40,16 +40,16 @@ class GifEntry < ActiveRecord::Base
     mean = strengths.mean
     sd = strengths.standard_deviation
 
-    puts "+++++++++++++++++++++++"
-    puts "mean: " + mean.to_s
-    puts "sd  : " + sd.to_s
-    puts strengths
+    # puts "+++++++++++++++++++++++"
+    # puts "mean: " + mean.to_s
+    # puts "sd  : " + sd.to_s
+    # puts strengths
 
     randomStrength = RandomGaussian.new(mean, sd).rand
     closestStrength = find_closest(randomStrength, strengths)
-    puts "randomStrength: " + randomStrength.to_s
-    puts "closestStrength: " + closestStrength.to_s
-    puts "+++++++++++++++++++++++"
+    # puts "randomStrength: " + randomStrength.to_s
+    # puts "closestStrength: " + closestStrength.to_s
+    # puts "+++++++++++++++++++++++"
 
     suggestedEntries = self.connections.where(strength: closestStrength)
     rand = rand(suggestedEntries.count)

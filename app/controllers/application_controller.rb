@@ -29,6 +29,24 @@ class ApplicationController < ActionController::Base
       entry.save
     end
   end
+
+  def scoreStats
+    positive = 0
+    negative = 0
+    allEntries = GifEntry.all
+    allEntries.each do |entry|
+      if entry.score > 0
+        positive = positive + 1
+      else
+        negative = negative + 1
+      end
+    end
+    p positive
+    p negative
+
+  end
+
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
