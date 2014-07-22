@@ -6,6 +6,10 @@ favorited = null;
 var LEFT_KEY = 37;
 var UP_KEY = 38;
 var RIGHT_KEY = 39;
+var loggedIn = true;
+<% if session[:user_id] == nil %>
+  loggedIn = false;
+<%end%>
 
 
 
@@ -38,6 +42,10 @@ function submitVote(input){
   });
 }
 function submitFavorite(){
+  if(!loggedIn) {
+    displayMessage("You need to be logged in to add a favorite");
+    return;
+  }
   if(!favorited) {
     jQuery.ajax({
       url: "/users/addFavorite/",
