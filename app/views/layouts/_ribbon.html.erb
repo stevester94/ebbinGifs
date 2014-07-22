@@ -26,16 +26,16 @@
 
 <script>
 //Turbolinks was calling ready before the html was fully loaded, placing after the ribbon fixed this 
-
+var sessionParam = null;
+<% if flash[:message] != nil %>
+  sessionParam = " <%= flash[:message] %> ";
+  <% flash[:message] = nil %>
+<% end %>  
 
 //if nothing passed in, will check sessionStorage for a message and display and pop if present
 function displayMessage (messageIn) {
   console.log("displayMessage called");
-  var sessionParam = null;
-  <% if flash[:message] != nil %>
-    sessionParam = " <%= flash[:message] %> ";
-    <% flash[:message] = nil %>
-  <% end %>  
+
 
   if(messageIn != null)
     message = messageIn;
@@ -47,6 +47,7 @@ function displayMessage (messageIn) {
 
   else if(sessionParam != null) {
     message = sessionParam;
+    sessionParam = null;
   }
 
   else

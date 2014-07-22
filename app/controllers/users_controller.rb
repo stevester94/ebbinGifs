@@ -13,6 +13,7 @@ class UsersController < ApplicationController
     @user = User.new(params.require(:user).permit([:name, :password, :password_confirmation]))
     if @user.save
       session[:user_id] = @user.id
+      flash[:message] = "Left Arrow: downvote, Right Arrow: upvote, Up Arrow: favorite"
       redirect_to root_path
     else
       allMessages = ""

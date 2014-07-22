@@ -28,8 +28,8 @@ function submitVote(input){
           document.getElementById("favoriteButton").innerHTML = "Favorite";
           favorited = false;
         }
-
-        displayMessage(null);//clears any existing messages
+        if(input != 0)//would clean any messages on first load of showImage(would clear login messages)
+          displayMessage(null);//clears any existing messages
  			 },
   		error: function() {
         displayMessage("An error ocurred");
@@ -67,7 +67,7 @@ $(document).keydown(function(e) {
       submitVote(1);
       break;
     }
-    return false;
+    return;
   }
 );
 
