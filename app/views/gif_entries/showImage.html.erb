@@ -3,6 +3,12 @@ past_url = 'null';
 current_url = 'null';
 favorited = null;
 
+var LEFT_KEY = 37;
+var UP_KEY = 38;
+var RIGHT_KEY = 39;
+
+
+
 function submitVote(input){
   var payload = {'past_url':past_url, 'current_url':current_url, 'vote':input}
   jQuery.ajax({
@@ -48,6 +54,24 @@ function submitFavorite(){
   } else
     displayMessage("Gif has already been favorited")
 }
+
+$(document).keydown(function(e) {
+  switch(e.keyCode) {
+    case LEFT_KEY:
+      submitVote(-1);
+      break;
+    case UP_KEY:
+      submitFavorite();
+      break;
+    case RIGHT_KEY:
+      submitVote(1);
+      break;
+    }
+    return false;
+  }
+);
+
+
 $(document).ready(submitVote(0));
 $(document).on('page:load', submitVote(0));
 
