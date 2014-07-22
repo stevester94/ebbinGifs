@@ -19,11 +19,14 @@ function deleteFavorite(input){
 <%= render '/layouts/ribbon' %>
 <%= @user.name %>'s favorites <br>
 
-<div class="favCol" align = "center"> <!couldn't get css to center things :( >
+<table>
 	<% @favorites.each_with_index do |favorite, i| %>
     <% @shaved = favorite.url[0..-5] %>
-		<section class="favEntry">
-
+		<% if i % 3 == 0 %>
+      <%= render inline: "</tr>" %>
+      <%= render inline: "<tr>" %>
+    <%end%>
+    <td>
       <a href="" 
         onMouseOver="document.img<%=i.to_s%>.src='<%= @shaved + '.gif' %>';" 
         onMouseOut="document.img<%=i.to_s%>.src='<%= @shaved + 'm.gif' %>';">
@@ -35,8 +38,8 @@ function deleteFavorite(input){
 	    		</br>
 	    		<%= render inline:  '<button onclick="deleteFavorite(' + favorite.id.to_s + ')">remove</button>'.html_safe%>
 	    	<% end %>
-	    <br>
-	  </section>
+	    </td>
 	<% end %>
-
+</tr>
+</table>
 </div>

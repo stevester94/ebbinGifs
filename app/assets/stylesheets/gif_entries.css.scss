@@ -51,14 +51,20 @@ body {
 img {height:450px}
 
 /* favorites */
-.favCol {
-  -moz-column-count: 3; /* Firefox */
-  -webkit-column-count: 3; /* Safari and Chrome */
-  column-count: 3;
+table {
+  border: 1px solid black;
+  table-layout: fixed;
+  width:100%;
+}
+td {
+  overflow: hidden;
+  text-align:center;
+  height:250px;
+  padding-bottom:15px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
-.favEntry {
-  display: inline-block;
-	img {height:250px};
-	padding-bottom:15px;
+td img {
+  height:100%;
 }
