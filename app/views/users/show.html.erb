@@ -19,6 +19,11 @@ function deleteFavorite(input){
 <%= render '/layouts/ribbon' %>
 <%= @user.name %>'s favorites <br>
 
+<div id="overlay"></div>
+<div id="overlayContent">
+    <img id="imgBig" src="" alt="" />
+</div>
+
 <table>
 	<% @favorites.each_with_index do |favorite, i| %>
     <% @shaved = favorite.url[0..-5] %>
@@ -27,12 +32,26 @@ function deleteFavorite(input){
       <%= render inline: "<tr>" %>
     <%end%>
     <td>
-      <a href="" 
+      <img
         onMouseOver="document.img<%=i.to_s%>.src='<%= @shaved + '.gif' %>';" 
-        onMouseOut="document.img<%=i.to_s%>.src='<%= @shaved + 'm.gif' %>';">
-      <img src="<%= @shaved + 'm.gif' %>" name="img<%=i.to_s%>">
-      </a> 
+        onMouseOut="document.img<%=i.to_s%>.src='<%= @shaved + 'm.gif' %>';"
+        src="<%= @shaved + 'm.gif' %>" name="img<%=i.to_s%>" id="img<%=i.to_s%>"
+      >
 
+      <script>
+      $("#img<%=i.to_s%>").click(function(){                                            
+        $("#imgBig").attr("src","<%= @shaved + '.gif' %>");
+        document.img<%=i.to_s%>.src='<%= @shaved + 'm.gif' %>';
+        $("#overlay").show();
+        $("#overlayContent").show();
+      });
+
+      $("#imgBig").click(function(){
+          $("#imgBig").attr("src", "");
+          $("#overlay").hide();
+          $("#overlayContent").hide();
+      });
+      </script>
 
 	    	<% if session[:user_id] == @user.id %>
 	    		</br>
