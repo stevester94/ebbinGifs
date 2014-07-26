@@ -40,16 +40,8 @@ class GifEntry < ActiveRecord::Base
     mean = strengths.mean
     sd = strengths.standard_deviation
 
-    # puts "+++++++++++++++++++++++"
-    # puts "mean: " + mean.to_s
-    # puts "sd  : " + sd.to_s
-    # puts strengths
-
     randomStrength = RandomGaussian.new(mean, sd).rand
     closestStrength = find_closest(randomStrength, strengths)
-    # puts "randomStrength: " + randomStrength.to_s
-    # puts "closestStrength: " + closestStrength.to_s
-    # puts "+++++++++++++++++++++++"
 
     suggestedEntries = self.connections.where(strength: closestStrength)
     rand = rand(suggestedEntries.count)

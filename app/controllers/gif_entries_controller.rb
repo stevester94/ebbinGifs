@@ -39,11 +39,11 @@ class GifEntriesController < ApplicationController
     currentEntry = GifEntry.find_by(url: params[:current_url])
     pastEntry = GifEntry.find_by(url: params[:past_url])
 
-    if currentEntry != nil
-      entry = currentEntry.suggestedEntry(params[:vote])
-    else
+    # if currentEntry != nil
+    #   entry = currentEntry.suggestedEntry(params[:vote])
+    # else
       entry = GifEntry.randomEntry
-    end
+    # end
 
     if session[:user_id] != nil
       if User.find(session[:user_id]).favorites.exists?(:url => entry.url)
