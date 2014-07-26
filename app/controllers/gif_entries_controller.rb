@@ -42,7 +42,7 @@ class GifEntriesController < ApplicationController
     # if currentEntry != nil
     #   entry = currentEntry.suggestedEntry(params[:vote])
     # else
-      entry = GifEntry.randomEntry
+      entry = GifEntry.find(15)
     # end
 
     if session[:user_id] != nil
