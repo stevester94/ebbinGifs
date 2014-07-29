@@ -15,5 +15,5 @@
 /log/*.log
 /tmp
 /config/database.yml
-/public/*.*
+/public/assets/
 /config/secrets.yml
