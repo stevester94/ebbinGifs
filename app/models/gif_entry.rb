@@ -1,6 +1,8 @@
 class GifEntry < ActiveRecord::Base
   has_many :connections, foreign_key: "origin_id"
   has_many :back_connections, foreign_key: "destination_id"
+  serialize :cachedUps
+  serialize :cachedDowns
 
 	def self.randomEntry
   	offset = rand(self.count)
@@ -25,34 +27,26 @@ class GifEntry < ActiveRecord::Base
   #if vote is positive, will select all connections with a positive strength
   #if vote is negative will select from all connections.
   def suggestedEntry(vote)
-
+    if self.shortCount > 10
+      print "cachedUps begin"
+      self.calculateCache(1)
+      print "cachedDowns begin"
+      self.calculateCache(-1)
+    end
+    self.shortCount = self.shortCount + 1
+    self.save
     if vote.to_i > 0
-      connections = self.connections.where("strength >= 0")
+      return GifEntry.find(self.cachedUps[rand(10)])
     else
-      connections = self.connections
-    end 
-
-    strengths = []
-    connections.all.each do |connection|
-      strengths.append(connection.strength)
+      return GifEntry.find(self.cachedDowns[rand(10)])
     end
 
-    mean = strengths.mean
-    sd = strengths.standard_deviation
-
-    randomStrength = RandomGaussian.new(mean, sd).rand
-    closestStrength = find_closest(randomStrength, strengths)
-
-    suggestedEntries = self.connections.where(strength: closestStrength)
-    rand = rand(suggestedEntries.count)
-
-    return suggestedEntries[rand].destination
   end
 
-  private
   def find_closest(value, array)
     #if multiple values are found to have the same distance, will be added to an array and 
-    # => randomly selected from
+    # => randomly selected from. Used to preven first gifs from repeatedly being selected.
+
     minDistance = (array.first - value).abs
     closestValue = array.first
     array.each do |cur_value|
@@ -64,8 +58,48 @@ class GifEntry < ActiveRecord::Base
     return closestValue
   end
 
+  #calculate cache precalulcates 10 entries in response to the vote type given
+  #will also reset the short count to 0
+  def calculateCache(vote)
+    if vote > 0
+      connections = self.connections.where("strength >= 0")
+    else
+      connections = self.connections
+    end 
+
+    strengths = []
+    connections.all.each do |connection|
+      strengths.append(connection.strength)
+    end
+
+    suggestions = []
+    (0..9).each do
+      mean = strengths.mean
+      sd = strengths.standard_deviation
+
+      randomStrength = RandomGaussian.new(mean, sd).rand
+      closestStrength = find_closest(randomStrength, strengths)
+
+      suggestedEntries = self.connections.where(strength: closestStrength)
+      rand = rand(suggestedEntries.count)
+
+      suggestions.append(suggestedEntries[rand].destination.id)
+    end
+
+    if vote > 0
+      self.cachedUps = suggestions
+    else
+      self.cachedDowns = suggestions
+    end
+    self.shortCount = 0
+    self.save
+  end
+
+
+
 end
 
+#Utility class to generate random numbers within a gaussian distribution
 class RandomGaussian
   def initialize(mean, stddev, rand_helper = lambda { Kernel.rand })
     @rand_helper = rand_helper

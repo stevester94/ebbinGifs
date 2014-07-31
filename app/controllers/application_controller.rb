@@ -26,6 +26,7 @@ class ApplicationController < ActionController::Base
     allEntries = GifEntry.all
     allEntries.each do |entry|
       entry.score = 0
+      entry.shortCount = 11
       entry.save
     end
   end
