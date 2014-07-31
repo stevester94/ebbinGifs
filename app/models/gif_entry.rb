@@ -70,37 +70,14 @@ class GifEntry < ActiveRecord::Base
       end
     end
 
-    connections = posCons
+    self.cachedUps = calculateSuggestions(posCons)
+    self.cachedDowns = calculateSuggestions(allCons)
+    self.shortCount = 0
+    self.save
+    print "------------------------------------------------------"
+  end
 
-    strengths = []
-    connections.each do |connection|
-      strengths.append(connection.strength)
-    end
-
-    mean = strengths.mean
-    sd = strengths.standard_deviation
-    suggestions = []
-
-    (0..9).each do
-      print " cache calculated "
-      randomStrength = RandomGaussian.new(mean, sd).rand
-      closestStrength = find_closest(randomStrength, strengths)
-
-      suggestedEntries = []
-      connections.each do |connection|
-        if connection.strength == closestStrength
-          suggestedEntries.append connection
-        end
-      end
-
-      rand = rand(suggestedEntries.count)
-
-      suggestions.append(suggestedEntries[rand].destination.id)
-    end
-
-    self.cachedUps = suggestions
-
-    connections = allCons
+  def calculateSuggestions(connections)
     strengths = []
     connections.each do |connection|
       strengths.append(connection.strength)
@@ -126,13 +103,8 @@ class GifEntry < ActiveRecord::Base
 
       suggestions.append(suggestedEntries[rand].destination.id)
     end
-    self.cachedDowns = suggestions
-
-    self.shortCount = 0
-    self.save
-    print "------------------------------------------------------"
+    return suggestions
   end
-
 
 
 end
