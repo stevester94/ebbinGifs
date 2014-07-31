@@ -23,9 +23,9 @@ class ApplicationController < ActionController::Base
   end
 
   def resetScores
-    allEntries = GifEntry.all
+    
 
-    allEntries.each do |entry|
+    GifEntry.order('id').all.each do |entry|
       entry.score = 0
       entry.shortCount = 11
       entry.cachedUps = []
@@ -44,12 +44,8 @@ class ApplicationController < ActionController::Base
   end
 
   def resetCaches
-    GifEntry.all.each do |entry|
-      if entry.shortCount > 10
-        next
-      end
-      entry.calculateCache(1)
-      entry.calculateCache(-1)
+    GifEntry.order('id').all.each do |entry|
+      entry.calculateCache()
     end
   end
 

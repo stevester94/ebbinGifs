@@ -4,11 +4,11 @@ class GifEntry < ActiveRecord::Base
   serialize :cachedUps
   serialize :cachedDowns
 
-	def self.randomEntry
-  	offset = rand(self.count)
-  	allRecords = self.all
-  	rand_record = allRecords[offset]
-  	return rand_record
+  def self.randomEntry
+    offset = rand(self.count)
+    allRecords = self.all
+    rand_record = allRecords[offset]
+    return rand_record
   end
 
   def updateScore(vote)
@@ -29,8 +29,7 @@ class GifEntry < ActiveRecord::Base
   def suggestedEntry(vote)
     print self.to_json
     if self.shortCount > 10
-      self.calculateCache(1)
-      self.calculateCache(-1)
+      self.calculateCache()
     end
     self.shortCount = self.shortCount + 1
     self.save
@@ -60,16 +59,21 @@ class GifEntry < ActiveRecord::Base
 
   #calculate cache precalulcates 10 entries in response to the vote type given
   #will also reset the short count to 0
-  def calculateCache(vote)
+  def calculateCache()
     print "------------------------------------------------"
-    if vote > 0
-      connections = self.connections.where("strength >= 0")
-    else
-      connections = self.connections
-    end 
+    posCons = []
+    allCons = []
+    self.connections.each do |connection|
+      allCons.append connection
+      if connection.strength >= 0
+        posCons.append connection
+      end
+    end
+
+    connections = posCons
 
     strengths = []
-    connections.all.each do |connection|
+    connections.each do |connection|
       strengths.append(connection.strength)
     end
 
@@ -82,17 +86,48 @@ class GifEntry < ActiveRecord::Base
       randomStrength = RandomGaussian.new(mean, sd).rand
       closestStrength = find_closest(randomStrength, strengths)
 
-      suggestedEntries = self.connections.where(strength: closestStrength)
+      suggestedEntries = []
+      connections.each do |connection|
+        if connection.strength == closestStrength
+          suggestedEntries.append connection
+        end
+      end
+
       rand = rand(suggestedEntries.count)
 
       suggestions.append(suggestedEntries[rand].destination.id)
     end
 
-    if vote > 0
-      self.cachedUps = suggestions
-    else
-      self.cachedDowns = suggestions
+    self.cachedUps = suggestions
+
+    connections = allCons
+    strengths = []
+    connections.each do |connection|
+      strengths.append(connection.strength)
     end
+
+    mean = strengths.mean
+    sd = strengths.standard_deviation
+    suggestions = []
+
+    (0..9).each do
+      print " cache calculated "
+      randomStrength = RandomGaussian.new(mean, sd).rand
+      closestStrength = find_closest(randomStrength, strengths)
+      
+      suggestedEntries = []
+      connections.each do |connection|
+        if connection.strength == closestStrength
+          suggestedEntries.append connection
+        end
+      end
+
+      rand = rand(suggestedEntries.count)
+
+      suggestions.append(suggestedEntries[rand].destination.id)
+    end
+    self.cachedDowns = suggestions
+
     self.shortCount = 0
     self.save
     print "------------------------------------------------------"
