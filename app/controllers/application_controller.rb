@@ -43,6 +43,16 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def resetCaches
+    GifEntry.all.each do |entry|
+      if entry.shortCount > 10
+        next
+      end
+      entry.calculateCache(1)
+      entry.calculateCache(-1)
+    end
+  end
+
   def scoreStats
     positive = 0
     negative = 0

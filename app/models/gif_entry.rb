@@ -29,9 +29,7 @@ class GifEntry < ActiveRecord::Base
   def suggestedEntry(vote)
     print self.to_json
     if self.shortCount > 10
-      print "cachedUps begin"
       self.calculateCache(1)
-      print "cachedDowns begin"
       self.calculateCache(-1)
     end
     self.shortCount = self.shortCount + 1
@@ -63,6 +61,7 @@ class GifEntry < ActiveRecord::Base
   #calculate cache precalulcates 10 entries in response to the vote type given
   #will also reset the short count to 0
   def calculateCache(vote)
+    print "------------------------------------------------"
     if vote > 0
       connections = self.connections.where("strength >= 0")
     else
@@ -96,6 +95,7 @@ class GifEntry < ActiveRecord::Base
     end
     self.shortCount = 0
     self.save
+    print "------------------------------------------------------"
   end
 
 
