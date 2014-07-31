@@ -24,10 +24,22 @@ class ApplicationController < ActionController::Base
 
   def resetScores
     allEntries = GifEntry.all
+
     allEntries.each do |entry|
       entry.score = 0
       entry.shortCount = 11
+      entry.cachedUps = []
+      entry.cachedDowns = []
       entry.save
+    end
+  end
+
+  def viewCached(id)
+    entry = GifEntry.find(id)
+    cache = entry.cachedUps
+    puts entry.shortCount
+    cache.each do |entry|
+      print entry
     end
   end
 

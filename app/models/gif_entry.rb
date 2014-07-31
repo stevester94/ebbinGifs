@@ -27,6 +27,7 @@ class GifEntry < ActiveRecord::Base
   #if vote is positive, will select all connections with a positive strength
   #if vote is negative will select from all connections.
   def suggestedEntry(vote)
+    print self.to_json
     if self.shortCount > 10
       print "cachedUps begin"
       self.calculateCache(1)
@@ -35,6 +36,7 @@ class GifEntry < ActiveRecord::Base
     end
     self.shortCount = self.shortCount + 1
     self.save
+
     if vote.to_i > 0
       return GifEntry.find(self.cachedUps[rand(10)])
     else
@@ -72,11 +74,12 @@ class GifEntry < ActiveRecord::Base
       strengths.append(connection.strength)
     end
 
+    mean = strengths.mean
+    sd = strengths.standard_deviation
     suggestions = []
-    (0..9).each do
-      mean = strengths.mean
-      sd = strengths.standard_deviation
 
+    (0..9).each do
+      print " cache calculated "
       randomStrength = RandomGaussian.new(mean, sd).rand
       closestStrength = find_closest(randomStrength, strengths)
 

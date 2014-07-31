@@ -6,6 +6,10 @@ class GifEntriesController < ApplicationController
 	end
 
 	def new
+    if session[:user] != 'hamster40'
+      redirect_to root_path
+    end
+    
 		@entry = GifEntry.new
 	end
 
