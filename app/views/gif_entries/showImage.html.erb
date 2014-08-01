@@ -13,17 +13,19 @@ var loggedIn = true;
 
 
 
-function submitVote(input){
+function submitVote(input) {
+  $("#loader").show();
   var payload = {'past_url':past_url, 'current_url':current_url, 'vote':input}
   jQuery.ajax({
       url: "/gif_entries/fetchEntry/",
       data: payload,
       success: function(result) {
+        $("#loader").hide();
         var parsedResult = JSON.parse(result.toString());
         past_url = current_url;
         current_url = parsedResult.url;
         var score = parsedResult.score;
-			  document.getElementById("image").innerHTML = '<img src="' + current_url + '" height="200""/>' + '<br>';
+			  document.getElementById("image").innerHTML = '<img src="' + current_url + '"/>' + '<br>';
         document.getElementById("score").innerHTML = "score: " + score;
         if(parsedResult.favorited == true) {
           document.getElementById("favoriteButton").innerHTML = "Already Favorited";
@@ -36,6 +38,7 @@ function submitVote(input){
           displayMessage(null);//clears any existing messages
  			 },
   		error: function() {
+        $("#loader").hide();
         displayMessage("An error ocurred");
  			 }
 
@@ -54,10 +57,10 @@ function submitFavorite(){
         displayMessage("Favorited");
         favorited = true;
         document.getElementById("favoriteButton").innerHTML = "Already Favorited";
-       },
+      },
       error: function() {
         displayMessage("An error ocurred");
-       }
+      }
 
     });
   } else
@@ -83,13 +86,21 @@ $(document).keydown(function(e) {
 
 $(document).ready(submitVote(0));
 $(document).on('page:load', submitVote(0));
-
 </script>
+
 <html>
 
 <%= render '/layouts/ribbon' %>
-<%= image_tag "loader.gif" %>
-<div align="center" id="image"><b></div>
+<div class="showImage" align="center">
+  <div class="overlay loader" id="loader">
+    <%= image_tag "loader.gif" %>
+  </div>
+  <div align="center" id="image"><b></div>
+
+</div>
+
+
+
 <div align="center">
   <% if session[:user_id] != nil %>
     <div align="center">
