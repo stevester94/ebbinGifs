@@ -23,8 +23,6 @@ class ApplicationController < ActionController::Base
   end
 
   def resetScores
-    
-
     GifEntry.order('id').all.each do |entry|
       entry.score = 0
       entry.shortCount = 11
@@ -65,6 +63,7 @@ class ApplicationController < ActionController::Base
 
   end
 
+  
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.

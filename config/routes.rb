@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   get "/users/deleteFavorite/" => 'users#deleteFavorite'
   get "/users/new"
   post "/users/create"
-  get "/users/:param_id" => "users#show"
+  get "/users/" => "users#show"
   
   get "/users/deleteFavorite/" => 'users#deleteFavorite'
 

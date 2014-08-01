@@ -17,48 +17,59 @@ function deleteFavorite(input){
 </script>
 
 <%= render '/layouts/ribbon' %>
-<%= @user.name %>'s favorites <br>
 
 <div id="overlay"></div>
 <div id="overlayContent">
     <img id="imgBig" src="" alt="" />
 </div>
 
-<table>
-	<% @favorites.each_with_index do |favorite, i| %>
-    <% @shaved = favorite.url[0..-5] %>
-		<% if i % 3 == 0 %>
-      <%= render inline: "</tr>" %>
-      <%= render inline: "<tr>" %>
+<div class="pagination dark">
+    <% (0..@pageCount).each_with_index do |i| %>
+      <% if @pageNumber == i %>
+        <span class= "page dark active"> <%= i %> </span>
+      <% else %>
+        <a href="<%= '/users/?' + {param_id: session[:user_id], page: i}.to_param%>" class="page dark"><%=i%></a>
+      <%end%>
     <%end%>
-    <td>
-      <img
-        onMouseOver="document.img<%=i.to_s%>.src='<%= @shaved + '.gif' %>';" 
-        onMouseOut="document.img<%=i.to_s%>.src='<%= @shaved + 'm.gif' %>';"
-        src="<%= @shaved + 'm.gif' %>" name="img<%=i.to_s%>" id="img<%=i.to_s%>"
-      >
+</div>
 
-      <script>
-      $("#img<%=i.to_s%>").click(function(){                                            
-        $("#imgBig").attr("src","<%= @shaved + '.gif' %>");
-        document.img<%=i.to_s%>.src='<%= @shaved + 'm.gif' %>';
-        $("#overlay").show();
-        $("#overlayContent").show();
-      });
+<table>
+  <%if @favorites != nil %>
+  	<% @favorites.each_with_index do |favorite, i| %>
+      <% @shaved = favorite.url[0..-5] %>
+  		<% if i % 3 == 0 %>
+        <%= render inline: "</tr>" %>
+        <%= render inline: "<tr>" %>
+      <%end%>
+      <td>
+        <img
+          onMouseOver="document.img<%=i.to_s%>.src='<%= @shaved + '.gif' %>';" 
+          onMouseOut="document.img<%=i.to_s%>.src='<%= @shaved + 'm.gif' %>';"
+          src="<%= @shaved + 'm.gif' %>" name="img<%=i.to_s%>" id="img<%=i.to_s%>"
+        >
 
-      $("#imgBig").click(function(){
-          $("#imgBig").attr("src", "");
-          $("#overlay").hide();
-          $("#overlayContent").hide();
-      });
-      </script>
+        <script>
+        $("#img<%=i.to_s%>").click(function(){                                            
+          $("#imgBig").attr("src","<%= @shaved + '.gif' %>");
+          document.img<%=i.to_s%>.src='<%= @shaved + 'm.gif' %>';
+          $("#overlay").show();
+          $("#overlayContent").show();
+        });
 
-	    	<% if session[:user_id] == @user.id %>
-	    		</br>
-	    		<%= render inline:  '<button onclick="deleteFavorite(' + favorite.id.to_s + ')">remove</button>'.html_safe%>
-	    	<% end %>
-	    </td>
-	<% end %>
+        $("#imgBig").click(function(){
+            $("#imgBig").attr("src", "");
+            $("#overlay").hide();
+            $("#overlayContent").hide();
+        });
+        </script>
+
+  	    	<% if session[:user_id] == @user.id %>
+  	    		</br>
+  	    		<%= render inline:  '<button onclick="deleteFavorite(' + favorite.id.to_s + ')">remove</button>'.html_safe%>
+  	    	<% end %>
+  	    </td>
+  	<% end %>
+  <% end %>
 </tr>
 </table>
 </div>

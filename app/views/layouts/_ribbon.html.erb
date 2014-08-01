@@ -10,7 +10,7 @@
 
 						<% if session[:user_id] != nil %>
 							<div class="ribbonName"> <%= User.find(session[:user_id]).name %> </div>
-							<%= link_to 'Favorites', '/users/' + session[:user_id].to_s %>
+							<%= link_to 'Favorites', '/users/?' + {param_id: session[:user_id], page: 0}.to_param %>
 							<%= link_to 'logout', '/sessions/logout/' %>
 						<% else %>
 							<%= link_to 'Log In', '/sessions/login' %>

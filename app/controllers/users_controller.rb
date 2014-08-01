@@ -1,12 +1,20 @@
 class UsersController < ApplicationController  
+  GIFS_PER_PAGE = 12
+
   def new
     @user = User.new 
   end
 
   def show
     user_id = params[:param_id]
+    @pageNumber = params[:page].to_i
   	@user = User.find(user_id)
-  	@favorites = @user.favorites
+  	@favorites = @user.favorites.sort_by(&:created_at)
+
+    @pageCount = @favorites.count / GIFS_PER_PAGE
+    beginIndex = @pageNumber * GIFS_PER_PAGE
+    endIndex = beginIndex + GIFS_PER_PAGE - 1
+    @favorites = @favorites[beginIndex..endIndex]
   end
 
   def create

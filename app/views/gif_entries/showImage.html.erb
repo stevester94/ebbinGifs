@@ -52,6 +52,7 @@ function submitFavorite(){
       data: {'url':current_url},
       success: function(result) {
         displayMessage("Favorited");
+        favorited = true;
         document.getElementById("favoriteButton").innerHTML = "Already Favorited";
        },
       error: function() {
@@ -87,13 +88,16 @@ $(document).on('page:load', submitVote(0));
 <html>
 
 <%= render '/layouts/ribbon' %>
+<%= image_tag "loader.gif" %>
 <div align="center" id="image"><b></div>
 <div align="center">
-  <button onclick="submitVote(1)">+</button>
-  <button onclick="submitVote(-1)">-</button><b>
   <% if session[:user_id] != nil %>
-    <%= render inline:  '<button id="favoriteButton" onClick="submitFavorite()">Fav</button><b>'.html_safe%> 
+    <div align="center">
+      <%= render inline:  '<button id="favoriteButton" onClick="submitFavorite()">Fav</button><b>'.html_safe%> 
+    </div>
   <% end %>
+  <button id="voteButton" onclick="submitVote(-1)">-</button>
+  <button id="voteButton" onclick="submitVote(1)">+</button><b>
   <div align="center" id="score"><b></div>
 </div>
 </body>
