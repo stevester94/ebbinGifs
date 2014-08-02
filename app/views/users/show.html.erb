@@ -72,4 +72,12 @@ function deleteFavorite(input){
   <% end %>
 </tr>
 </table>
+<div class="pagination dark">
+    <% (0..@pageCount).each_with_index do |i| %>
+      <% if @pageNumber == i %>
+        <span class= "page dark active"> <%= i %> </span>
+      <% else %>
+        <a href="<%= '/users/?' + {param_id: session[:user_id], page: i}.to_param%>" class="page dark"><%=i%></a>
+      <%end%>
+    <%end%>
 </div>

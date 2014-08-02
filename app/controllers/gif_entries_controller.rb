@@ -16,12 +16,15 @@ class GifEntriesController < ApplicationController
   def autoCreate
     render :nothing => true
     #shortCount initialized so caches will be generated
-    @entry = GifEntry.new(score: 0, url: params[:param_url], shortCount: 11) 
-    @entry.save
-    GifEntry.all.each do |record| #create a connection to all existing GifEntries
-      if !(@entry.id == record.id)
-        @entry.connections.create(strength: 0, destination_id: record.id)
-        record.connections.create(strength: 0, destination_id: @entry.id)
+    p $AUTO_CREATE_KEY
+    if params[:key] == $AUTO_CREATE_KEY
+      @entry = GifEntry.new(score: 0, url: params[:param_url], shortCount: 11) 
+      @entry.save
+      GifEntry.all.each do |record| #create a connection to all existing GifEntries
+        if !(@entry.id == record.id)
+          @entry.connections.create(strength: 0, destination_id: record.id)
+          record.connections.create(strength: 0, destination_id: @entry.id)
+        end
       end
     end
   end
