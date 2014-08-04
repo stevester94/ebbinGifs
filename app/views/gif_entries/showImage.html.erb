@@ -15,6 +15,7 @@ var loggedIn = true;
 
 function submitVote(input) {
   $("#loader").show();
+  console.log("vote submitted")
   var payload = {'past_url':past_url, 'current_url':current_url, 'vote':input}
   jQuery.ajax({
       url: "/gif_entries/fetchEntry/",
