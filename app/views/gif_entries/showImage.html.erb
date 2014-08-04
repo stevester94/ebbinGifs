@@ -48,6 +48,7 @@ function submitVote(input) {
   });
 }
 function submitFavorite(){
+  console.log("")
   if(!loggedIn) {
     displayMessage("You need to be logged in to add a favorite");
     return;
@@ -69,26 +70,30 @@ function submitFavorite(){
   } else
     displayMessage("Gif has already been favorited")
 }
-
-$(document).keydown(function(e) {
-  switch(e.keyCode) {
-    case LEFT_KEY:
-      submitVote(-1);
-      break;
-    case UP_KEY:
-      submitFavorite();
-      break;
-    case RIGHT_KEY:
-      submitVote(1);
-      break;
+function bindKeys() {
+  $(document).keydown(function(e) {
+    switch(e.keyCode) {
+      case LEFT_KEY:
+        submitVote(-1);
+        break;
+      case UP_KEY:
+        submitFavorite();
+        break;
+      case RIGHT_KEY:
+        submitVote(1);
+        break;
+      }
+      return;
     }
-    return;
-  }
-);
+  );
+}
 
 
-$(document).ready(submitVote(0));
-$(document).on('page:load', submitVote(0));
+$(document).ready(function() {
+  submitVote(0);
+  bindKeys();
+});
+
 </script>
 
 <html>
