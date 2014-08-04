@@ -1,3 +1,4 @@
+<%= render '/layouts/ribbon' %> <!-- we want this called first -->
 <script>
 past_url = 'null';
 current_url = 'null';
@@ -6,6 +7,12 @@ favorited = null;
 var LEFT_KEY = 37;
 var UP_KEY = 38;
 var RIGHT_KEY = 39;
+var A_KEY = 65;
+var W_KEY = 87;
+var D_KEY = 68;
+
+
+
 var loggedIn = true;
 <% if session[:user_id] == nil %>
   loggedIn = false;
@@ -74,12 +81,15 @@ function bindKeys() {
   $(document).keydown(function(e) {
     switch(e.keyCode) {
       case LEFT_KEY:
+      case A_KEY:
         submitVote(-1);
         break;
       case UP_KEY:
+      case W_KEY:
         submitFavorite();
         break;
       case RIGHT_KEY:
+      case D_KEY:
         submitVote(1);
         break;
       }
@@ -88,11 +98,12 @@ function bindKeys() {
   );
 }
 
-
+//unbind is called on each page load within the ribbon
+//if this is the page loaded the appropriate keys will be bound
+//a bit of a hack but turbolinks was being a bitch
 $(document).ready(function() {
   console.log("ready called");
   submitVote(0);
-  $(document).unbind();
   bindKeys();
 });
 
@@ -100,7 +111,7 @@ $(document).ready(function() {
 
 <html>
 
-<%= render '/layouts/ribbon' %>
+
 <div class="showImage" align="center">
   <div class="overlay loader" id="loader">
     <%= image_tag "loader.gif" %>

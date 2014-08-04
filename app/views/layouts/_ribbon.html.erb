@@ -63,6 +63,10 @@ function displayMessage (messageIn) {
   else
     document.getElementById("message").innerHTML = message;  
 }
-// $(document).on('page:load', displayMessage('load'));
-$(document).ready(displayMessage(null));
+$(document).ready( function() {
+    displayMessage(null);
+    $(document).unbind();//A little hack to get around turbolinks fuckery
+  }
+);
+
 </script>
