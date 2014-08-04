@@ -28,12 +28,14 @@ function submitVote(input) {
         var score = parsedResult.score;
 			  document.getElementById("image").innerHTML = '<img src="' + current_url + '"/>' + '<br>';
         document.getElementById("score").innerHTML = "score: " + score;
-        if(parsedResult.favorited == true) {
-          document.getElementById("favoriteButton").innerHTML = "Already Favorited";
-          favorited = true;
-        } else {
-          document.getElementById("favoriteButton").innerHTML = "Favorite";
-          favorited = false;
+        if(loggedIn) {
+          if(parsedResult.favorited == true) {
+            document.getElementById("favoriteButton").innerHTML = "Already Favorited";
+            favorited = true;
+          } else {
+            document.getElementById("favoriteButton").innerHTML = "Favorite";
+            favorited = false;
+          }
         }
         if(input != 0)//would clean any messages on first load of showImage(would clear login messages)
           displayMessage(null);//clears any existing messages
