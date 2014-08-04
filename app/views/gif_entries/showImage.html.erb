@@ -90,7 +90,9 @@ function bindKeys() {
 
 
 $(document).ready(function() {
+  console.log("ready called");
   submitVote(0);
+  $(document).unbind();
   bindKeys();
 });
 
